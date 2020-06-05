@@ -92,10 +92,6 @@ class AccountForm extends Model
                     return $query->active();
             }, 'except' => [ActiveRecord::SCENARIO_CREATE, ActiveRecord::SCENARIO_DELETE]],
 
-            [['accountId'], 'string', 'on' => ActiveRecord::SCENARIO_DELETE],
-            [['accountId'], 'trim', 'on' => ActiveRecord::SCENARIO_DELETE],
-            [['accountId'], 'convertArray', 'on' => ActiveRecord::SCENARIO_DELETE],
-
             [['roleIds'], ArrayValidator::class],
             [['roleIds'], 'filter', 'filter' => function ($value) {
                 return array_unique($value);

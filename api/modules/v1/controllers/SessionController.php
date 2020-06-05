@@ -88,8 +88,6 @@ class SessionController extends Controller
      */
     public function actionView(int $id)
     {
-        $admin = \Yii::$app->user->identity
-            ->toArray([], ['currentRole', 'permissions', 'orgs', 'roles', 'areas']);
-        return compact('admin');
+        return \Yii::$app->user->identity;
     }
 }

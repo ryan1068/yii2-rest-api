@@ -50,7 +50,7 @@ class AreaSearch extends Model
             'query' => $query->defaultOrderBy(),
         ]);
 
-        if (isset($this->pagination) && (empty($this->pagination) || $this->pagination == 'false')) {
+        if (isset($this->pagination) && empty($this->pagination)) {
             $dataProvider->pagination = false;
         }
 

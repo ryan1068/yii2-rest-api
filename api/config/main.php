@@ -81,8 +81,6 @@ return [
                 'GET,HEAD,OPTIONS v1/roles/permission-tree' => 'v1/role/permission-tree',
                 'PATCH v1/accounts/<id>/enablement' => 'v1/account/enable',
                 'PATCH v1/accounts/<id>/disablement' => 'v1/account/disable',
-                'GET,HEAD,OPTIONS v1/areas/spider' => 'v1/area/index',
-                'GET,HEAD,OPTIONS v1/yecai/accounts' => 'v1/yecai-account/index',
             ],
         ],
         'authManager' => [

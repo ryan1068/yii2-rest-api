@@ -53,16 +53,4 @@ return [
             'api/config/main-local.php',
         ],
     ],
-    'Local' => [
-        'path' => 'local',
-        'setWritable' => [
-            'api/web/assets',
-        ],
-        'setExecutable' => [
-            'yii',
-        ],
-        'setCookieValidationKey' => [
-            'api/config/main-local.php',
-        ],
-    ],
 ];
