@@ -1,0 +1,40 @@
+{
+    "name": "yii2",
+    "description": "yii2-rest 微服务",
+    "keywords": ["yii2"],
+    "type": "project",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1.0",
+        "yidas/yii2-composer-bower-skip": "~2.0.5",
+        "yiisoft/yii2": "2.0.33",
+        "yiisoft/yii2-mongodb": "^2.0",
+        "yiisoft/yii2-imagine": "~2.1.0",
+        "yiisoft/yii2-httpclient": "^2.0",
+        "yiisoft/yii2-queue": "^2.0",
+        "yiisoft/yii2-redis": "~2.0.0",
+        "ipaya/yii2-dingtalk-robot": "*",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "yiisoft/yii2-elasticsearch": "~2.1.0",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.1.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "phpunit/phpunit": "~5.7.27 || ~6.5.5"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.cloud.tencent.com/composer/"
+        }
+    }
+}
