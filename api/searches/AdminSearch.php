@@ -62,11 +62,7 @@ class AdminSearch extends Model
      */
     public function search()
     {
-        $query = AdminUser::find();
-
-        if ($this->all != 1) {
-            $query->active();
-        }
+        $query = AdminUser::find()->active();
 
         $query->joinWith('roles')
             ->andWhere(['<>', Role::withDatabaseName('role_key'), Role::ROLE_ADMINISTRATOR]);
