@@ -4,7 +4,7 @@ namespace api\modules\v1\controllers;
 use api\components\Controller;
 use api\components\IntranetCall;
 use api\forms\OrgForm;
-use api\services\AccountService;
+use api\traits\AccountTrait;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
@@ -46,7 +46,7 @@ class OrgController extends Controller
      */
     public function actionIndex()
     {
-        $orgStruct = AccountService::getOrgStruct();
+        $orgStruct = AccountTrait::getOrgStruct();
         return compact('orgStruct');
     }
 

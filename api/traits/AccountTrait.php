@@ -5,20 +5,18 @@
  * Time: 17:09
  */
 
-namespace api\services;
+namespace api\traits;
 
 use api\models\RolePermission;
 use api\resources\Column;
 use api\resources\Org;
 use api\resources\Role;
-use api\traits\ArrayTrait;
-use yii\base\Component;
 
 /**
- * Class AccountService
+ * Trait AccountTrait
  * @package api\services
  */
-class AccountService extends Component
+trait AccountTrait
 {
     /**
      * 获取组织架构

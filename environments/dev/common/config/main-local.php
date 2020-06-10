@@ -26,13 +26,5 @@ return [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
-        'yecai' => [
-            'class' => 'api\services\YecaiService',
-            'host' => '',
-            'client' => '',
-            'secret' => '',
-            'scope' => '',
-            'grantType' => '',
-        ],
     ],
 ];

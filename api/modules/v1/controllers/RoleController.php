@@ -5,7 +5,7 @@ use api\components\Controller;
 use api\components\IntranetCall;
 use api\forms\RoleForm;
 use api\searches\RoleSearch;
-use api\services\AccountService;
+use api\traits\AccountTrait;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
@@ -131,7 +131,7 @@ class RoleController extends Controller
      */
     public function actionPermissionTree()
     {
-        $tree = AccountService::getPermissionTree();
+        $tree = AccountTrait::getPermissionTree();
 
         return compact('tree');
     }

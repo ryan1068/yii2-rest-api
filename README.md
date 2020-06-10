@@ -1,4 +1,4 @@
-##用户中心微服务
+## 用户中心微服务
 
 1. 执行依赖包安装
 ```
@@ -48,3 +48,5 @@ php init --env=Development --overwrite=all
 ├── requirements.php
 └── yii
 ```
+#### api文档效果图
+<img src="https://www.herozw.com/wp-content/uploads/2020/06/E90968DC-1E18-461c-BBEE-B23B836C57B2.png"  />

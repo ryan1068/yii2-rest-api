@@ -26,22 +26,22 @@ abstract class BaseService extends Component
     /**
      * @var string
      */
-    public $uri;
+    public $apiUrl;
 
     /**
      * @param $api
      */
-    public function setUri($api)
+    public function setApiUrl($api)
     {
-        $this->uri = $this->host . $api;
+        $this->apiUrl = $this->host . $api;
     }
 
     /**
      * @return mixed
      */
-    public function getUri()
+    public function getApiUrl()
     {
-        return $this->uri;
+        return $this->apiUrl;
     }
 
     /**
@@ -54,9 +54,9 @@ abstract class BaseService extends Component
      */
     public function request($api, $data = [], $method = 'POST', $headers = ['Content-Type' => 'application/x-www-form-urlencoded'])
     {
-        $this->setUri($api);
+        $this->setApiUrl($api);
         $response = HttpTrait::request(
-            $this->uri,
+            $this->apiUrl,
             $data,
             $method,
             $headers

@@ -5,7 +5,7 @@ namespace api\resources;
 
 use api\models\query\AdminUserRoleQuery;
 use api\models\query\OrgAdminQuery;
-use api\services\AccountService;
+use api\traits\AccountTrait;
 use yii\filters\RateLimitInterface;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -297,7 +297,7 @@ class AdminUser extends \api\models\AdminUser implements IdentityInterface,RateL
      */
     public function getPermissionTree()
     {
-        return AccountService::getPermissionTree(0, $this->currentRoleId);
+        return AccountTrait::getPermissionTree(0, $this->currentRoleId);
     }
 
     /**

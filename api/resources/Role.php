@@ -8,7 +8,7 @@
 namespace api\resources;
 
 
-use api\services\AccountService;
+use api\traits\AccountTrait;
 
 /**
  * Class Role
@@ -39,7 +39,7 @@ class Role extends \api\models\Role
     {
         return [
             'permissions' => function () {
-                return AccountService::getPermissionTree(0, $this->id);
+                return AccountTrait::getPermissionTree(0, $this->id);
             },
             'userCount' => function () {
                 return $this->getAdminUsers()

@@ -3,8 +3,7 @@
 namespace api\resources;
 
 
-use api\models\AdminUserRole;
-use api\services\AccountService;
+use api\traits\AccountTrait;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\IdentityInterface;
