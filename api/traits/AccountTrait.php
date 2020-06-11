@@ -11,6 +11,7 @@ use api\models\RolePermission;
 use api\resources\Column;
 use api\resources\Org;
 use api\resources\Role;
+use yii\caching\TagDependency;
 
 /**
  * Trait AccountTrait
@@ -43,6 +44,15 @@ trait AccountTrait
     }
 
     /**
+     * @param $roleId
+     * @return string
+     */
+    public static function getPermissionTreeCacheKey($roleId)
+    {
+        return "call-center-permission-tree-{$roleId}";
+    }
+
+    /**
      * 获取角色权限树
      * @param int $pid
      * @param int $roleId
@@ -50,39 +60,45 @@ trait AccountTrait
      */
     public static function getPermissionTree(int $pid = 0, int $roleId = 0)
     {
-        $permissionTree = [];
-        $columns = Column::find()
-            ->active()
-            ->pid($pid)
-            ->defaultOrderBy()
-            ->all();
-        foreach ($columns as $column) {
-            $column = $column->toArray();
-            $permissionTree[$column['id']] = $column;
-            if ($roleId) {
-                $role = Role::findOne($roleId);
-                if ($role->isAdministrator()) {
-                    $permissionTree[$column['id']]['checked'] = true;
-                    if (strpos($column['permission'], 'system:work') !== false) {
-                        $permissionTree[$column['id']]['checked'] = false;
+        $cacheKey = self::getPermissionTreeCacheKey($roleId);
+
+        $callable = function () use ($pid, $roleId) {
+            $permissionTree = [];
+            $columns = Column::find()
+                ->active()
+                ->pid($pid)
+                ->defaultOrderBy()
+                ->all();
+            foreach ($columns as $column) {
+                $column = $column->toArray();
+                $permissionTree[$column['id']] = $column;
+                if ($roleId) {
+                    $role = Role::findOne($roleId);
+                    if ($role->isAdministrator()) {
+                        $permissionTree[$column['id']]['checked'] = true;
+                        if (strpos($column['permission'], 'system:work') !== false) {
+                            $permissionTree[$column['id']]['checked'] = false;
+                        }
+                    } else {
+                        $checked = RolePermission::find()
+                            ->active()
+                            ->andWhere([
+                                'role_id' => $roleId,
+                                'column_id' => $column['id']
+                            ])
+                            ->exists();
+                        $permissionTree[$column['id']]['checked'] = $checked;
                     }
-                } else {
-                    $checked = RolePermission::find()
-                        ->active()
-                        ->andWhere([
-                            'role_id' => $roleId,
-                            'column_id' => $column['id']
-                        ])
-                        ->exists();
-                    $permissionTree[$column['id']]['checked'] = $checked;
+                }
+
+                $child = self::getPermissionTree($column['id'], $roleId);
+                if ($child) {
+                    $permissionTree[$column['id']]['child'] = $child;
                 }
             }
+            return ArrayTrait::clearKey($permissionTree);
+        };
 
-            $child = self::getPermissionTree($column['id'], $roleId);
-            if ($child) {
-                $permissionTree[$column['id']]['child'] = $child;
-            }
-        }
-        return ArrayTrait::clearKey($permissionTree);
+        return \Yii::$app->cache->getOrSet($cacheKey, $callable, 86400, new TagDependency(['tags' => $cacheKey]));
     }
 }

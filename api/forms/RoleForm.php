@@ -12,11 +12,13 @@ use api\models\AdminUserRole;
 use api\models\Column;
 use api\models\RolePermission;
 use api\resources\Role;
+use api\traits\AccountTrait;
 use api\traits\ArrayTrait;
 use common\validators\ArrayValidator;
 use yii\base\Model;
 use yii\base\UserException;
 use yii\helpers\ArrayHelper;
+use yii\caching\TagDependency;
 
 /**
  * Class RoleForm
@@ -171,6 +173,7 @@ class RoleForm extends Model
                     throw new UserException('更新rbac角色权限失败');
                 }
             }
+            TagDependency::invalidate(\Yii::$app->cache, AccountTrait::getPermissionTreeCacheKey($this->roleId));
 
             $tran->commit();
         } catch (\Exception $e) {
@@ -220,6 +223,7 @@ class RoleForm extends Model
                     throw new UserException('删除rbac角色失败');
                 }
             }
+            TagDependency::invalidate(\Yii::$app->cache, AccountTrait::getPermissionTreeCacheKey($this->roleId));
 
             $tran->commit();
         } catch (\Exception $e) {
