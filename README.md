@@ -12,8 +12,8 @@ php init --env=Development --overwrite=all
 
 3. 目录结构
 ```
-├── api
-│   ├── components      //组件
+├── api                 //核心服务
+│   ├── components      //组件
 │   ├── config          //配置
 │   ├── forms           //表单模型
 │   ├── models          //数据模型
@@ -23,7 +23,7 @@ php init --env=Development --overwrite=all
 │   ├── searches        //搜索模型
 │   ├── services        //服务
 │   ├── traits          //特性
-│   └── web
+│   └── web             //服务入口
 ├── autocompletion.php  //IDE代码自动补全
 ├── common
 │   ├── behaviors       //行为类
