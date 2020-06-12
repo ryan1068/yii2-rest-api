@@ -49,4 +49,4 @@ php init --env=Development --overwrite=all
 └── yii
 ```
 #### api文档效果图
-<img src="https://www.herozw.com/wp-content/uploads/2020/06/E90968DC-1E18-461c-BBEE-B23B836C57B2.png"  />
+<img src="https://www.ryan1068.cn/wp-content/uploads/2020/06/QQ%E6%88%AA%E5%9B%BE20200612171246.png"  />
