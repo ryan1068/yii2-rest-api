@@ -53,6 +53,49 @@ trait AccountTrait
     }
 
     /**
+     * @param int $pid
+     * @param int $roleId
+     * @return array
+     */
+    public static function getPermissions(int $pid = 0, int $roleId = 0)
+    {
+        $permissionTree = [];
+        $columns = Column::find()
+            ->active()
+            ->pid($pid)
+            ->defaultOrderBy()
+            ->all();
+        foreach ($columns as $column) {
+            $column = $column->toArray();
+            $permissionTree[$column['id']] = $column;
+            if ($roleId) {
+                $role = Role::findOne($roleId);
+                if ($role->isAdministrator()) {
+                    $permissionTree[$column['id']]['checked'] = true;
+                    if (strpos($column['permission'], 'system:work') !== false) {
+                        $permissionTree[$column['id']]['checked'] = false;
+                    }
+                } else {
+                    $checked = RolePermission::find()
+                        ->active()
+                        ->andWhere([
+                            'role_id' => $roleId,
+                            'column_id' => $column['id']
+                        ])
+                        ->exists();
+                    $permissionTree[$column['id']]['checked'] = $checked;
+                }
+            }
+
+            $child = self::getPermissions($column['id'], $roleId);
+            if ($child) {
+                $permissionTree[$column['id']]['child'] = $child;
+            }
+        }
+        return ArrayTrait::clearKey($permissionTree);
+    }
+
+    /**
      * 获取角色权限树
      * @param int $pid
      * @param int $roleId
@@ -62,41 +105,12 @@ trait AccountTrait
     {
         $cacheKey = self::getPermissionTreeCacheKey($roleId);
 
-        $callable = function () use ($pid, $roleId) {
-            $permissionTree = [];
-            $columns = Column::find()
-                ->active()
-                ->pid($pid)
-                ->defaultOrderBy()
-                ->all();
-            foreach ($columns as $column) {
-                $column = $column->toArray();
-                $permissionTree[$column['id']] = $column;
-                if ($roleId) {
-                    $role = Role::findOne($roleId);
-                    if ($role->isAdministrator()) {
-                        $permissionTree[$column['id']]['checked'] = true;
-                        if (strpos($column['permission'], 'system:work') !== false) {
-                            $permissionTree[$column['id']]['checked'] = false;
-                        }
-                    } else {
-                        $checked = RolePermission::find()
-                            ->active()
-                            ->andWhere([
-                                'role_id' => $roleId,
-                                'column_id' => $column['id']
-                            ])
-                            ->exists();
-                        $permissionTree[$column['id']]['checked'] = $checked;
-                    }
-                }
+        if (\Yii::$app->redis->setnx(__METHOD__, 1)) {
+            TagDependency::invalidate(\Yii::$app->cache, $cacheKey);
+        }
 
-                $child = self::getPermissionTree($column['id'], $roleId);
-                if ($child) {
-                    $permissionTree[$column['id']]['child'] = $child;
-                }
-            }
-            return ArrayTrait::clearKey($permissionTree);
+        $callable = function () use ($pid, $roleId) {
+            return call_user_func_array([self::class, 'getPermissions'], [$pid, $roleId]);
         };
 
         return \Yii::$app->cache->getOrSet($cacheKey, $callable, 86400, new TagDependency(['tags' => $cacheKey]));
