@@ -48,5 +48,6 @@ php init --env=Development --overwrite=all
 ├── requirements.php
 └── yii
 ```
+
 #### api文档效果图
-<img src="https://www.ryan1068.cn/wp-content/uploads/2020/06/QQ%E6%88%AA%E5%9B%BE20200612171246.png"  />
+![image](https://www.ryan1068.cn/wp-content/uploads/2020/06/QQ%E6%88%AA%E5%9B%BE20200612171246.png)
